@@ -15,7 +15,7 @@
 
       <section class="article-body">
         <p class="lead-paragraph">
-          카지노 이코노미는 단순히 도박과 유사한 상품이 늘어난다는 것만을 의미하지 않는다. 여기에 더해, 사람들이 스스로 도박에 대한 진입장벽을 낮추고, 역으로 이것만이 살 수 있는 유일한 길이라고 생각하게 만드는 것이다.
+          카지노 이코노미는 단순히 도박의 접근성을 낮추는 걸 넘어 사람들이 스스로 이것만이 유일한 길이라고 생각하게 만드는 것이다.
         </p>
 
         <figure class="full-width-image">
@@ -53,11 +53,11 @@
         <p>
           지금 청년 세대는 역대 가장 술을 적게 마시고, 담배를 적게 피우며, 가장 건강하고 건전하게 살려고 노력하는 세대인 동시에, 가장 도박에 미쳐 있고, 포르노에 노출되어 있으며, 숏폼에 중독되어 있는 세대이다. 이는 얼핏 모순되어 보이지만, 실상은 같은 본질에서 나온 다른 결과물이다. 기존의 방식이 무너진 가운데에서, 그 좁은 관문을 뚫기 위해 무한한 리스크를 짊어지거나 무한한 노력을 해내기 위한 청년들의 사투이다.
         </p>
+        <footer class="article-footer">
+          <p>Written by Twi</p>
+        </footer>
       </section>
-
-      <footer class="article-footer">
-        <p>Written by Twi</p>
-      </footer>
+      <FloatingBottomNav />
     </div>
   </div>
 </template>
@@ -65,6 +65,7 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
 import Lenis from '@studio-freight/lenis';
+import FloatingBottomNav from '../components/FloatingBottomNav.vue';
 
 // Lenis 인스턴스
 let lenis;

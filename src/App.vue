@@ -216,7 +216,7 @@ body {
   bottom: 30px; /* 화면 하단에서 30px 위로 */
   left: 50%;
   transform: translateX(-50%); /* 정확히 중앙 정렬 */
-  z-index: 1000; /* 콘텐츠 위에 떠 있어야 함 */
+  z-index: 1001; /* 콘텐츠 위에 떠 있어야 함 */
 
   /* 반투명 배경 효과 (Glassmorphism) */
   background: rgba(20, 20, 20, 0.75); /* 어두운 반투명 배경 */

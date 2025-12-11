@@ -65,13 +65,15 @@
           이름과, 하나의 벌써 토끼, 새겨지는 별이 그리고 것은 없이 있습니다. 했던 위에 아름다운 덮어 밤을 그러나 이름과 까닭이요, 봅니다. 이름자를 어머니, 위에 별 나의 것은 계절이 버리었습니다.
           나는 써 하나에 그리고 동경과 가을로 멀듯이, 계십니다. 위에 이네들은 가득 까닭입니다.
           <h3 class="section-label">Authored by Willy</h3>
+          <footer class="article-footer">
+            <p>Written by Blockchain Vally</p>
+          </footer>
         </div>
+        <FloatingBottomNav />
 
       </section>
 
-      <footer class="article-footer">
-        <p>Written by Blockchain Vally</p>
-      </footer>
+
     </div> <!-- article-content-container 닫힘 -->
   </div> <!-- article-wrapper 닫힘 -->
 </template> <!-- template 닫힘 -->
@@ -79,6 +81,7 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
 import Lenis from '@studio-freight/lenis';
+import FloatingBottomNav from '../components/FloatingBottomNav.vue';
 
 // Lenis 인스턴스
 let lenis;

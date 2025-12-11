@@ -33,7 +33,7 @@
 
       <!-- 4번 아이템 (작게) -->
       <RouterLink to="/dialogue" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
-        <img src="https://placehold.co/800x900/dddddd/FFF?text=Art+4" alt="Art 4" />
+        <img src="/image4.webp" alt="Art 4" />
         <div class="caption">
           <span>04 / Dialogue</span>
           <h3>Q & A</h3>
@@ -120,5 +120,10 @@ onMounted(() => {
     text-transform: uppercase;
   }
 }
-
+/* 모바일 스타일: 1칸으로 변경 */
+@media (max-width: 768px) {
+  .grid-section {
+    grid-template-columns: 1fr; /* 1칸으로 변경 */
+  }
+}
 </style>

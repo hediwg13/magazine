@@ -59,18 +59,21 @@
         </p>
         <p>
         현재 시각 오전 02:43, X에 500배 익절 인증 글이 올라왔다. 이것도 인사이더겠지. 운이 어딨어. 나도 더 열심히 하면 언젠가는 해낼 수 있겠지? 얼른 쳇바퀴 같은 지겨운 팔자 좀 고치고 싶다.</p>
+
+        <footer class="article-footer">
+          <p>Written by juhyuk Bak</p>
+        </footer>
       </section>
 
-      <footer class="article-footer">
-        <p>Written by juhyuk Bak</p>
-      </footer>
     </div>
   </div>
+  <FloatingBottomNav />
 </template>
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
 import Lenis from '@studio-freight/lenis';
+import FloatingBottomNav from '../components/FloatingBottomNav.vue';
 
 // Lenis 인스턴스
 let lenis;

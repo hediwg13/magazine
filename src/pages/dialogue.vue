@@ -50,11 +50,13 @@
 
     </div>
   </div>
+  <FloatingBottomNav />
 </template>
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
 import Lenis from '@studio-freight/lenis';
+import FloatingBottomNav from '../components/FloatingBottomNav.vue';
 
 // Lenis 인스턴스
 let lenis;
