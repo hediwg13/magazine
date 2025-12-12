@@ -49,7 +49,7 @@
 
         <div class="text-section section-intro">
           <p style="font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 1.4rem; font-weight: 800; color: #111;  margin-bottom: 1.5rem; letter-spacing: -0.02em; line-height: 1.3;">
-            03. 계십니다. 위에 이네들은 가득 까닭입니다
+            03. 앞으로 언론의 신뢰는 무엇으로 결정될까?
           </p>
           <span class="drop-cap">예</span>측시장은 단순한 토토나 도박 게임이 아니다. 정치와 스포츠 같은 현실의 사건, 그리고 인터넷에서 형성되는 여론을 하나로 잇는 통로로 작동한다. 사람들은 단순 도박을 하는 것이 아니라 내가 중요하다고 믿는 주제에 돈을 걸며 관심을 드러낸다. 그 관심은 곧 가격과 거래량이라는 형태로 나타나게 된다. 그래서 최근에는 선거 전망을 다룰 때 뉴스가 예측시장 데이터를 참고하는 사례도 나온다. 이러한 확률은 단순한 그래프가 아니라 정보의 가치를 가늠하게 해주는 신호로 동작한다.
           <p>
