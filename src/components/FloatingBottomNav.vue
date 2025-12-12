@@ -17,7 +17,7 @@
             <div class="thumbnail-wrapper">
               <img src="/image1.webp" alt="Related Story 1" class="thumbnail"/>
             </div>
-            <p class="item-caption">Casino Economy</p>
+            <p class="item-caption">카지노 이코노미와 질서의 붕괴</p>
           </RouterLink>
 
           <!-- Item 2 -->
@@ -33,7 +33,7 @@
             <div class="thumbnail-wrapper">
               <img src="/image3.webp" class="thumbnail"/>
             </div>
-            <p class="item-caption">Never Stop Gambling</p>
+            <p class="item-caption">게임을 종료하고 싶습니다</p>
           </RouterLink>
 
           <!-- Item 4 (추가됨) -->
@@ -51,37 +51,30 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'; // ★ nextTick 추가
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const translateYValue = ref(100);
+let ticking = false;
 
-// ★ 핵심 수정: 페이지 변경 시 DOM 업데이트 후 스크롤을 확실하게 초기화 ★
+// ★ 페이지 변경 시 DOM 업데이트 후 스크롤을 확실하게 초기화 ★
 watch(
     () => route.path,
     async () => {
-      // 1. 화면이 완전히 바뀔 때까지 기다립니다.
       await nextTick();
-
-      // 2. 모바일(Window) 스크롤 즉시 초기화
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-
-      // 3. 데스크탑(.left-scroll-area) 스크롤 즉시 초기화
       const scrollContainer = document.querySelector('.left-scroll-area');
       if (scrollContainer) {
         scrollContainer.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       }
-
-      // 4. 하단 바 다시 숨기기
       translateYValue.value = 100;
     }
 );
 
-const handleScroll = (event) => {
+// ★ 계산 로직을 분리 ★
+const updatePosition = (target) => {
   let scrollTop, scrollHeight, clientHeight;
-
-  const target = event.target;
 
   if (target === document || !target.scrollHeight) {
     scrollTop = window.scrollY;
@@ -94,8 +87,9 @@ const handleScroll = (event) => {
   }
 
   const scrollableHeight = scrollHeight - clientHeight;
-  const startThreshold = scrollableHeight * 0.65;
+  const startThreshold = scrollableHeight * 0.65; // 65% 지점
 
+  // 범위 밖일 때 빠른 리턴
   if (scrollTop < startThreshold) {
     translateYValue.value = 100;
     return;
@@ -110,9 +104,24 @@ const handleScroll = (event) => {
 
   const scrolledInActiveRange = scrollTop - startThreshold;
   let progress = scrolledInActiveRange / activeRange;
+
+  // 값 보정 (0 ~ 1)
   progress = Math.min(1, Math.max(0, progress));
 
   translateYValue.value = 100 * (1 - progress);
+};
+
+// ★ requestAnimationFrame을 적용한 스크롤 핸들러 ★
+const handleScroll = (event) => {
+  const target = event.target;
+
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      updatePosition(target);
+      ticking = false;
+    });
+    ticking = true;
+  }
 };
 
 const scrollToTop = () => {
@@ -155,7 +164,7 @@ onUnmounted(() => {
   padding: 0;
   border-top: 1px solid rgba(0,0,0,0.05);
 
-  /* 스크롤과 1:1 반응을 위해 transition 제거 */
+  /* ★ 핵심 최적화: transition 속성을 완전히 제거하여 스크롤과 충돌 방지 ★ */
   will-change: transform;
 
   box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
@@ -177,7 +186,8 @@ onUnmounted(() => {
   max-width: 1400px;
   margin: 0 auto;
   flex-grow: 1;
-  overflow-y: auto;
+  /* ★ 수정: PC 모드에서도 스크롤 바 제거 (overflow-y: auto -> hidden) ★ */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -212,12 +222,15 @@ onUnmounted(() => {
   overflow: hidden;
   border-radius: 0;
   margin-bottom: 0.7rem;
+  /* ★ 핵심: 사진 비율 고정 (가로 4 : 세로 3) - 여기서 크기 일관성 확보 ★ */
   aspect-ratio: 4 / 3;
+  width: 100%;
 }
 
 .thumbnail {
   width: 100%;
   height: 100%;
+  /* ★ 이미지가 비율에 맞춰 꽉 차게 함 (찌그러짐 방지) ★ */
   object-fit: cover;
   transition: transform 0.5s ease;
 }
@@ -281,8 +294,9 @@ onUnmounted(() => {
   }
 
   .thumbnail-wrapper {
-    aspect-ratio: auto;
-    flex: 1;
+    /* ★ 수정: 모바일에서도 비율 고정 (4:3)하여 사진 크기 일정하게 유지 ★ */
+    aspect-ratio: 4 / 3;
+    flex: initial; /* flex-shrink 방지 */
     margin-bottom: 0.5rem;
     height: auto;
     min-height: 0;

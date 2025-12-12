@@ -6,7 +6,7 @@
       <img src="/cover.webp" alt="Cover"/>
       <div class="caption">
         <span>01 / Article</span>
-        <h3>Casino Economy</h3>
+        <h3>카지노 이코노미와 질서의 붕괴</h3>
       </div>
     </RouterLink>
 
@@ -27,7 +27,7 @@
         <img src="/image3.webp" alt="Art 3" />
         <div class="caption">
           <span>03 / Opinion</span>
-          <h3>Never Stop Gambling</h3>
+          <h3>게임을 종료하고 싶습니다</h3>
         </div>
       </RouterLink>
 
