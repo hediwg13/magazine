@@ -153,7 +153,7 @@ figure { margin: 4rem -3rem; }
 
 .pull-quote {
   /* 인용구 스타일을 좀 더 모던하게 변경 */
-  font-family: 'Noto Sans KR';
+  font-family: 'Noto Sans KR',sans-serif;
   font-size: 1.7rem !important;
   color: black;
   margin: 16rem 0;
@@ -188,7 +188,6 @@ figure {
   border-bottom: 1px solid black;
   line-height: 1.3;
   color: black;
-  font-family: 'Syne', 'Noto Sans KR', sans-serif;
   font-size: 2rem;
   font-weight: 800;
   margin-top: 3rem;
