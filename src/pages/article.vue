@@ -1,95 +1,188 @@
 <template>
-  <div class="article-wrapper">
-    <header class="article-header">
-    </header>
+  <!-- 데이터 로딩 상태 분기 -->
+  <div class="article-wrapper" v-if="!loading">
+    <header class="article-header"></header>
 
     <div class="article-content-container">
-
+      <!-- [Hero Section] 메타데이터 기반 동적 타이틀 -->
       <section class="article-hero">
-        <p class="article-metadata">Article / <span class="author">BY twi</span></p>
-        <h1 class="article-title syne-font">
-          카지노 이코노미와 <br>
-          질서의 붕괴
-        </h1>
+        <p class="article-metadata">
+          {{ metadata.category || 'Article' }} /
+          <span class="author">BY {{ metadata.author || 'contributor' }}</span>
+        </p>
+        <h1 class="article-title syne-font" v-html="formattedTitle"></h1>
       </section>
 
+      <!-- [Body Section] 파싱된 블록들을 타입별로 순회하며 출력 -->
       <section class="article-body">
-        <p class="lead-paragraph">
-          카지노 이코노미는 단순히 도박의 접근성을 낮추는 걸 넘어 사람들이 스스로 이것만이 유일한 길이라고 생각하게 만드는 것이다.
-        </p>
-
-        <figure class="full-width-image">
-          <img src="/image1.webp" alt="Formula 1 Las Vegas" />
-          <figcaption class="image-caption">
-          </figcaption>
-        </figure>
-
-        <p>
-          2025년, '카지노 이코노미'라는 단어가 새롭게 부상하고 있다. 이는 경제 주체들이 점점 더 과감한 베팅을 하며, 더 높은 리스크를 감수하는 자산 배분을 선호하는 현상을 의미한다. 미국의 젊은 남성 절반이 온라인 스포츠 베팅 계정을 보유하고 있고, 점점 더 많은 사람들이 극단적인 베팅에 뛰어들고 있다. 2024년 밈코인 열풍에 이어 2025년 주식 시장의 광풍까지, 사람들은 이제 노동보다 카지노 테이블에 앉아 리스크를 짊어지는 것을 더 즐기고 있다.
-        </p>
-        <p>
-          이러한 흐름에 맞춰 카지노들도 움직이기 시작했다. 로빈후드는 옵션 거래 앱을 통해 사람들에게 점점 더 고위험 고수익 상품을 추천하고 있다. 뿐만 아니라 폴리마켓과 칼시 같은 예측 시장은 스포츠 베팅 시장에 본격적으로 진출했다. 미국의 암호화폐 거래소 코인베이스는 무기한 선물 거래를 허용했고, 한국 역시 토스에서 해외주식 옵션 거래를 준비하고 있다.
-        </p>
-        <p>
-          비단 금융 분야만의 이야기가 아니다. 틱톡에서는 '랜덤박스'라는 명목하에 쇼핑과 도박을 결합한 상품을 판매하고 있으며, 한국 번화가에는 진입장벽을 낮춘 슬롯머신인 인형 뽑기방이 점점 늘어나고 있다. 미국의 새로운 핀테크 업체 coverd는 마치 게임처럼 보상을 얻을 수 있는 상품을 개발했다. 전 세계가 도박이라는 거대한 열풍에 휩쓸리고 있는 것 같다.
-        </p>
-
-        <blockquote class="pull-quote">
-          사람들은 더 이상 기존의 방식을 신뢰하지 않는다
-        </blockquote>
 
 
-        <p>
-          하지만 카지노 이코노미는 단순히 도박과 유사한 상품이 늘어난다는 것만을 의미하지 않는다. 여기에 더해, 사람들이 스스로 도박에 대한 진입장벽을 낮추고, 역으로 이것만이 살 수 있는 유일한 길이라고 생각하게 만드는 것이다. 즉, 사람들이 세계 자체를 일종의 카지노 티켓을 들고 자유를 사는 거대한 카지노로 인식하게 만드는 것이다.
-        </p>
-        <p>
-          그렇다면 왜 젊은 세대는 이러한 사고방식을 당연하게 여기게 되었을까. 가장 쉬운 대답은 역시 코로나 시기에 있었던 자산 폭등 때문이다. 노동소득을 뛰어넘는 자본소득의 상승을 이미 목격한 청년 세대에게 리스크 테이킹은 이제 당연한 일이 되어버렸다. 가만히 앉아 모든 것을 잃을 바에야, 리스크에 모든 것을 걸 수밖에 없게 된 것이다.
-        </p>
+        <template v-for="(block, index) in articleBlocks" :key="index">
 
+          <!-- 리드 문구 (LEAD: 키워드) -->
+          <p v-if="block.type === 'lead'" class="lead-paragraph">
+            {{ block.content }}
+          </p>
 
-        <p>
-          그러나 이 이면에는 더욱 복잡한 문제가 자리 잡고 있다. 사람들이 더 이상 '기존의 방식'을 신뢰하지 않는다는 것이다. 열심히 공부해서 좋은 대학을 나오고, 좋은 기업에 취직해서 가정을 꾸리고 집을 사는 중산층의 전형적인 루트를 더 이상 신뢰하지 않는다. 달러는 타락했고 일자리는 없으며 대학은 아무런 쓸모가 없고 집값은 하늘을 뚫는다. 기존의 질서가 무너지는 가운데, 청년들이 선택할 수 있는 길은 두 가지뿐이다. 더 좁아진 관문을 뚫기 위해 지옥같이 자신을 단련하거나, 혹은 아예 무한한 리스크를 짊어진 채 희박한 가능성에 도전하거나.
-        </p>
-        <p>
-          지금 청년 세대는 역대 가장 술을 적게 마시고, 담배를 적게 피우며, 가장 건강하고 건전하게 살려고 노력하는 세대인 동시에, 가장 도박에 미쳐 있고, 포르노에 노출되어 있으며, 숏폼에 중독되어 있는 세대이다. 이는 얼핏 모순되어 보이지만, 실상은 같은 본질에서 나온 다른 결과물이다. 기존의 방식이 무너진 가운데에서, 그 좁은 관문을 뚫기 위해 무한한 리스크를 짊어지거나 무한한 노력을 해내기 위한 청년들의 사투이다.
-        </p>
-        <footer class="article-footer">
-          <p>Written by Twi</p>
+          <!-- 섹션 제목 (## 또는 QUESTION: 키워드) -->
+          <h2 v-else-if="block.type === 'heading'" class="question-title">
+            {{ block.content }}
+          </h2>
+
+          <!-- 인용구 (>) -->
+          <blockquote v-else-if="block.type === 'quote'" class="pull-quote">
+            {{ block.content }}
+          </blockquote>
+
+          <!-- [핵심] 이미지 섹션: id 폴더 내 파일과 자동 결합 -->
+          <figure v-else-if="block.type === 'image'" class="full-width-image">
+            <img
+                :src="`/src/data/${route.params.id}${block.url}`"
+                :alt="block.caption"
+                @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
+            />
+            <figcaption v-if="block.caption" class="image-caption">{{ block.caption }}</figcaption>
+          </figure>
+
+          <!-- 일반 문단 -->
+          <p v-else-if="block.type === 'paragraph'">
+            {{ block.content }}
+          </p>
+
+          <!-- 작성자 레이블 ([Name] 키워드) -->
+          <p v-else-if="block.type === 'label'" class="section-label">
+            Authored by {{ block.content }}
+          </p>
+        </template>
+
+        <footer class="article-footer" v-if="metadata.author">
+          <p>Written by {{ metadata.author }}</p>
         </footer>
       </section>
-      <FloatingBottomNav />
     </div>
+    <FloatingBottomNav />
+  </div>
+
+  <!-- 로딩 및 에러 처리 화면 -->
+  <div v-else class="loading-screen">
+    <div v-if="error" class="error-msg">
+      <p>{{ error }}</p>
+      <RouterLink to="/">Back to Home</RouterLink>
+    </div>
+    <div v-else class="loader">Fetching Content...</div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick, watch, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import Lenis from '@studio-freight/lenis';
 import FloatingBottomNav from '../components/FloatingBottomNav.vue';
 
-// Lenis 인스턴스
+const route = useRoute();
+const metadata = ref({});
+const articleBlocks = ref([]);
+const loading = ref(true);
+const error = ref(null);
 let lenis;
 
-onMounted(() => {
-  // 아티클 페이지는 윈도우 스크롤을 사용합니다.
+// 제목의 줄바꿈(\n)을 <br>로 변환하여 렌더링
+const formattedTitle = computed(() => {
+  return metadata.value.title ? metadata.value.title.replace(/\n/g, '<br>') : '';
+});
+
+/**
+ * 컴포넌트 내부 마크다운 파싱 로직
+ */
+const fetchAndParse = async () => {
+  try {
+    loading.value = true;
+    error.value = null;
+
+    const id = route.params.id;
+    if (!id) throw new Error("Missing ID");
+
+    // 해당 ID 폴더의 article.md 로드 시도
+    const response = await fetch(`/src/data/${id}/article.md`);
+    if (!response.ok) throw new Error("Article file not found");
+
+    const text = await response.text();
+    const lines = text.split(/\r?\n/);
+
+    const meta = {};
+    const blocks = [];
+    let isMeta = true;
+    let startIndex = 0;
+
+    // 1. 상단 메타데이터 파싱
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line === '' && i > 0) {
+        startIndex = i + 1;
+        isMeta = false;
+        break;
+      }
+      if (isMeta) {
+        const match = line.match(/^([\w-]+):\s*(.*)$/);
+        if (match) meta[match[1].toLowerCase()] = match[2];
+        else { startIndex = i; isMeta = false; break; }
+      }
+    }
+
+    // 2. 본문 내용 블록화
+    lines.slice(startIndex).forEach(line => {
+      const clean = line.trim();
+      if (!clean) return;
+
+      if (clean.startsWith('LEAD:')) {
+        blocks.push({ type: 'lead', content: clean.replace(/^LEAD:\s*/, '') });
+      } else if (clean.startsWith('IMG:')) {
+        // IMG: /파일명 | 캡션
+        const parts = clean.replace(/^IMG:\s*/, '').split('|').map(s => s.trim());
+        blocks.push({ type: 'image', url: parts[0], caption: parts[1] || '' });
+      } else if (clean.startsWith('>')) {
+        blocks.push({ type: 'quote', content: clean.replace(/^>\s*/, '') });
+      } else if (clean.startsWith('##')) {
+        blocks.push({ type: 'heading', content: clean.replace(/^##\s*/, '') });
+      } else if (clean.startsWith('[') && clean.endsWith(']')) {
+        blocks.push({ type: 'label', content: clean.replace(/[\[\]]/g, '') });
+      } else {
+        blocks.push({ type: 'paragraph', content: clean });
+      }
+    });
+
+    metadata.value = meta;
+    articleBlocks.value = blocks;
+
+  } catch (err) {
+    error.value = err.message;
+  } finally {
+    loading.value = false;
+  }
+};
+
+// URL 파라미터 변경 시 다시 로드
+watch(() => route.params.id, () => fetchAndParse());
+
+onMounted(async () => {
+  await fetchAndParse();
+  await nextTick();
+
+  // 스무스 스크롤 초기화
   lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
   });
 
-  function raf(time) {
-    lenis.raf(time);
+  const raf = (time) => {
+    lenis?.raf(time);
     requestAnimationFrame(raf);
-  }
+  };
   requestAnimationFrame(raf);
-
-  // (스크롤 기반 애니메이션이 필요하다면 여기에 GSAP ScrollTrigger 코드를 추가합니다.)
 });
 
-onUnmounted(() => {
-  if (lenis) lenis.destroy();
-});
+onUnmounted(() => lenis?.destroy());
 </script>
 
 

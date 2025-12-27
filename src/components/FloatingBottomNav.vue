@@ -13,35 +13,51 @@
 
         <div class="related-articles-grid">
           <!-- Item 1 -->
-          <RouterLink to="/article" class="related-article-item">
+          <RouterLink :to="`/article/${route.params.id}`" class="related-article-item">
             <div class="thumbnail-wrapper">
-              <img src="/image1.webp" alt="Related Story 1" class="thumbnail"/>
+              <img
+                  class="thumbnail"
+                  :src="`/src/data/${route.params.id}/image1.webp`"
+                  @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
+              />
             </div>
-            <p class="item-caption">카지노 이코노미와 질서의 붕괴</p>
+            <p class="item-caption">{{metadata.article}} </p>
           </RouterLink>
 
           <!-- Item 2 -->
-          <RouterLink to="/comment" class="related-article-item">
+          <RouterLink :to="`/comment/${route.params.id}`" class="related-article-item">
             <div class="thumbnail-wrapper">
-              <img src="/image2.webp" alt="Related Story 2" class="thumbnail"/>
+              <img
+                  class="thumbnail"
+                  :src="`/src/data/${route.params.id}/image2.webp`"
+                  @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
+              />
             </div>
-            <p class="item-caption">Let's Go Gambling!</p>
+            <p class="item-caption">{{metadata.comment}}</p>
           </RouterLink>
 
           <!-- Item 3 -->
-          <RouterLink to="/opinion" class="related-article-item">
+          <RouterLink :to="`/opinion/${route.params.id}`" class="related-article-item">
             <div class="thumbnail-wrapper">
-              <img src="/image3.webp" class="thumbnail"/>
+              <img
+                  class="thumbnail"
+                  :src="`/src/data/${route.params.id}/image3.webp`"
+                  @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
+              />
             </div>
-            <p class="item-caption">게임을 종료하고 싶습니다</p>
+            <p class="item-caption">{{metadata.opinion}}</p>
           </RouterLink>
 
           <!-- Item 4 (추가됨) -->
-          <RouterLink to="/dialogue" class="related-article-item">
+          <RouterLink :to="`/dialogue/${route.params.id}`" class="related-article-item">
             <div class="thumbnail-wrapper">
-              <img src="/image4.webp" alt="Related Story 4" class="thumbnail"/>
+              <img
+                  class="thumbnail"
+                  :src="`/src/data/${route.params.id}/image4.webp`"
+                  @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
+              />
             </div>
-            <p class="item-caption">Q & A</p>
+            <p class="item-caption">{{metadata.dialogue}}</p>
           </RouterLink>
         </div>
       </div>
@@ -53,11 +69,39 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
+import parseMarkdownArticle from '../utils/markdownParser.js';
 
+const metadata = ref({});
+const articleBlocks = ref([]);
+const loading = ref(true);
+const error = ref(null);
+let lenis;
 const route = useRoute();
 const translateYValue = ref(100);
 let ticking = false;
+const initArticle = async () => {
+  try {
+    loading.value = true;
+    error.value = null;
 
+    const id = route.params.id;
+    if (!id) throw new Error("Article ID is missing.");
+
+    // 주소창의 id에 따라 해당 폴더의 opinion.md 파일을 읽어옵니다.
+    const targetPath = `/src/data/${id}/content.md`;
+
+    const { metadata: meta, blocks } = await parseMarkdownArticle(targetPath);
+    metadata.value = meta;
+    articleBlocks.value = blocks;
+
+    console.log(`Successfully loaded data for Issue ${id}`, meta);
+  } catch (err) {
+    console.error("Data loading error:", err);
+    error.value = "기사를 찾을 수 없거나 불러오는 데 실패했습니다.";
+  } finally {
+    loading.value = false;
+  }
+};
 // ★ 페이지 변경 시 DOM 업데이트 후 스크롤을 확실하게 초기화 ★
 watch(
     () => route.path,
@@ -131,8 +175,11 @@ const scrollToTop = () => {
     scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
   }
 };
-
-onMounted(() => {
+watch(() => route.params.id, (newId) => {
+  if (newId) initArticle();
+});
+onMounted(async () => {
+  await initArticle();
   const scrollContainer = document.querySelector('.left-scroll-area');
   if (scrollContainer) {
     scrollContainer.addEventListener('scroll', handleScroll);

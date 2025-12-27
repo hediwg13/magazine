@@ -1,79 +1,97 @@
 <template>
-  <div class="article-wrapper">
-    <header class="article-header">
-    </header>
+  <div class="article-wrapper" v-if="!loading">
+    <header class="article-header"></header>
 
     <div class="article-content-container">
-
+      <!-- 메타데이터 영역 -->
       <section class="article-hero">
-        <p class="article-metadata">Dialogue / <span class="author">BY contributor</span></p>
+        <p class="article-metadata">
+           Dialogue / <span class="author">BY {{ metadata.author || 'contributor' }}</span>
+        </p>
         <h1 class="article-title syne-font">
-          Q & A
+          {{ metadata.title1 || 'Q & A' }}
         </h1>
       </section>
 
+      <!-- 파싱된 본문 영역 -->
       <section class="article-body">
-        <blockquote class="pull-quote">
-          예측시장과 도박의 본질적인 차이가 무엇이라 생각하는가
-        </blockquote>
-        <p>
-          예측과 도박은 의미의 유무로 구분된다. 게임 룰에 제한된 의미만 보여주는 도박과 달리 예측시장은 여론을 보여준다. </p>
-        <p class="section-label" >  T-Male
-        </p>
-        <p>
-          예측 시장과 도박의 본질적인 차이는 존재하지 않는다. 그러나 원가 100달러짜리 가방이 샤넬 브랜드를 입고 10만 달러가 되듯이, 잘 만든 브랜딩은 도박을 중독자들의 막장 놀이에서 세련된 트레이더들의 마인드 게임으로 바꾸었다. </p>
-        <p class="section-label">   Twi
-        </p>
+        <template v-for="(block, index) in articleBlocks" :key="index">
+          <!-- 질문 (인용문) -->
+          <blockquote v-if="block.type === 'heading'" class="pull-quote">
+            {{ block.content }}
+          </blockquote>
 
-        <p>
-          도박의 범위를 좁혔다는 가정하에 도박은 과정의 공정을 추구하고 예측시장은 기회의 공정을 추구한다.</p>
-        <p class="section-label"> Wi11y
-        </p>
-        <p>도박은 개인의 운과 이득에 집중되어 타인의 관여가 배제되지만, 예측시장의 핵심은 공감에 있다. 예측시장의 가격은 다수의 집단적인 믿음이 응축되어 형성된 결과이다. 이러한 과정을 관찰하고 참여하는 행위는 개인의 1인칭에서 벗어나, 다수의 판단에 입각하여 사고하도록 유도한다. 즉, 예측시장은 인식의 지평을 확장시키고, '이성적 공감'을 가능하게 한다. <p class="section-label"> Jermain Chong
-        </p>
+          <!-- 답변 내용 -->
+          <p v-else-if="block.type === 'paragraph'">
+            {{ block.content }}
+          </p>
 
-        <blockquote class="pull-quote">
-          앞으로 점점 카지노 이코노미는 강화될 것이라 생각하는가
-        </blockquote>
-
-        <p>
-          카지노 이코노미는 인간의 본성이다. 지금까지 그 본성은 억눌러져왔고, 드디어 모두가 참여할 수 있는 아레나가 마련된
-          것이다. </p>
-        <p class="section-label" >  T-Male
-        </p>
-        <p>
-          강화될 수 밖에 없다. 그것은 카지노 이코노미가 본질적으로 "빵과 서커스"와
-          결이 같기 때문이다. 양극화라는 근본적인 문제 해결을 아무도 하지 않기에, 결국엔 다들 빵과 서커스를 제공할 수 밖 에 없을 것이다. </p>
-        <p class="section-label">   Twi
-        </p>
-
-        <p>
-          강화될 것이다. 그러나 우리가 생각하는
-          도파민 넘치는 자유로운 카지노가 아닌,
-          규제와 기득권층의 손길이 닿는 그런 카지노가 자리잡을 것이다.</p>
-        <p class="section-label"> Wi11y
-        </p>
-        <p>강화될 것이다. 현대 사회의 계층이동
-          사다리는 카지노 이코노미 혹은 스타트업 엑싯 말고는 없어보인다.</p>
-        <p class="section-label"> Jermain Chong
-        </p>
+          <!-- 작성자 레이블 (대괄호 [Name] 형태) -->
+          <p v-else-if="block.type === 'label'" class="section-label">
+            {{ block.content }}
+          </p>
+        </template>
       </section>
-
     </div>
   </div>
+
+  <div v-else class="loading-screen">
+    <div class="loader">Loading Article...</div>
+  </div>
+
+  <!-- 하단 네비게이션 -->
   <FloatingBottomNav />
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick } from 'vue';
 import Lenis from '@studio-freight/lenis';
 import FloatingBottomNav from '../components/FloatingBottomNav.vue';
+import parseMarkdownArticle from '../utils/markdownParser.js'
+import { useRoute } from 'vue-router';
 
-// Lenis 인스턴스
+const route = useRoute();
+const metadata = ref({});
+const articleBlocks = ref([]);
+const loading = ref(true);
 let lenis;
 
-onMounted(() => {
-  // 아티클 페이지는 윈도우 스크롤을 사용합니다.
+/**
+ * 마크다운 파싱 로직 개선
+ * - 메타데이터와 본문을 빈 줄(Blank Line) 기준으로 엄격히 분리합니다.
+ */
+
+const initArticle = async () => {
+  try {
+    loading.value = true;
+    const id = route.params.id;
+
+    if (!id) throw new Error("ID가 없습니다.");
+
+    // ★ 핵심 수정 2: 따옴표(')가 아닌 백틱(`)을 사용해야 ${id}가 작동합니다.
+    // 주의: fetch는 보통 public 폴더 기준이므로 파일 위치에 따라 경로 확인이 필요합니다.
+    const targetPath = `/src/data/${id}/dialogue.md`;
+
+    // 1. 유틸리티 함수 호출
+    const { metadata: meta, blocks } = await parseMarkdownArticle(targetPath);
+
+    // 3. 컴포넌트 내부의 반응형 변수(ref)에 데이터를 담음
+    metadata.value = meta;
+    articleBlocks.value = blocks;
+
+    console.log("데이터를 성공적으로 받았습니다:", articleBlocks.value);
+  } catch (error) {
+    console.error("데이터를 받는 중 오류 발생:", error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(async () => {
+  await initArticle(); // 데이터 로딩 완료를 기다림
+  await nextTick();    // DOM 렌더링 완료를 기다림
+
+  // 스무스 스크롤 초기화
   lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -81,12 +99,10 @@ onMounted(() => {
   });
 
   function raf(time) {
-    lenis.raf(time);
+    if (lenis) lenis.raf(time);
     requestAnimationFrame(raf);
   }
   requestAnimationFrame(raf);
-
-  // (스크롤 기반 애니메이션이 필요하다면 여기에 GSAP ScrollTrigger 코드를 추가합니다.)
 });
 
 onUnmounted(() => {
@@ -94,10 +110,17 @@ onUnmounted(() => {
 });
 </script>
 
-
-### 2. CSS 스타일 (가독성 및 대비 강화)
-
-```css
 <style lang="scss" scoped>
 @use './article.scss';
+
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  color: #888;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 </style>

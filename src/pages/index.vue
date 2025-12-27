@@ -2,7 +2,7 @@
   <div class="content-list">
 
     <!-- 아이템 1 -->
-    <RouterLink to="/article" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
+    <RouterLink to="/article/1" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
       <img src="/cover.webp" alt="Cover"/>
       <div class="caption">
         <span>01 / Article</span>
@@ -11,7 +11,7 @@
     </RouterLink>
 
     <!-- 아이템 2 -->
-    <RouterLink to="/comment" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
+    <RouterLink to="/comment/1" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
       <img src="/image1.webp" alt="Image 1" loading="lazy"/>
       <div class="caption">
         <span>02 / Comment</span>
@@ -23,7 +23,7 @@
     <div class="grid-section">
 
       <!-- 3번 아이템 (작게) -->
-      <RouterLink to="/opinion" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
+      <RouterLink to="/opinion/1" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
         <img src="/image3.webp" alt="Art 3" />
         <div class="caption">
           <span>03 / Opinion</span>
@@ -32,7 +32,7 @@
       </RouterLink>
 
       <!-- 4번 아이템 (작게) -->
-      <RouterLink to="/dialogue" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
+      <RouterLink to="/dialogue/1" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
         <img src="/image4.webp" alt="Art 4" />
         <div class="caption">
           <span>04 / Dialogue</span>
