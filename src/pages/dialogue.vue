@@ -70,7 +70,7 @@ const initArticle = async () => {
 
     // ★ 핵심 수정 2: 따옴표(')가 아닌 백틱(`)을 사용해야 ${id}가 작동합니다.
     // 주의: fetch는 보통 public 폴더 기준이므로 파일 위치에 따라 경로 확인이 필요합니다.
-    const targetPath = `/src/data/${id}/dialogue.md`;
+    const targetPath = `/data/${id}/dialogue.md`;
 
     // 1. 유틸리티 함수 호출
     const { metadata: meta, blocks } = await parseMarkdownArticle(targetPath);
