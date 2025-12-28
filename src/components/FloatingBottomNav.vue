@@ -18,7 +18,7 @@
             <div class="thumbnail-wrapper">
               <img
                   class="thumbnail"
-                  :src="`/src/data/${route.params.id}/image1.webp`"
+                  :src="`/data/${route.params.id}/image1.webp`"
                   @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
               />
             </div>
@@ -30,7 +30,7 @@
             <div class="thumbnail-wrapper">
               <img
                   class="thumbnail"
-                  :src="`/src/data/${route.params.id}/image2.webp`"
+                  :src="`/data/${route.params.id}/image2.webp`"
                   @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
               />
             </div>
@@ -42,7 +42,7 @@
             <div class="thumbnail-wrapper">
               <img
                   class="thumbnail"
-                  :src="`/src/data/${route.params.id}/image3.webp`"
+                  :src="`/data/${route.params.id}/image3.webp`"
                   @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
               />
             </div>
@@ -54,7 +54,7 @@
             <div class="thumbnail-wrapper">
               <img
                   class="thumbnail"
-                  :src="`/src/data/${route.params.id}/image4.webp`"
+                  :src="`/data/${route.params.id}/image4.webp`"
                   @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
               />
             </div>
@@ -88,7 +88,7 @@ const initArticle = async () => {
     if (!id) throw new Error("Article ID is missing.");
 
     // 주소창의 id에 따라 해당 폴더의 opinion.md 파일을 읽어옵니다.
-    const targetPath = `/src/data/${id}/content.md`;
+    const targetPath = `/data/${id}/content.md`;
 
     const { metadata: meta, blocks } = await parseMarkdownArticle(targetPath);
     metadata.value = meta;

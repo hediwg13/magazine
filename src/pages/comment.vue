@@ -29,7 +29,7 @@
           <!-- 이미지 블록 (IMG: 키워드) -->
           <figure v-else-if="block.type === 'image'" class="full-width-image">
             <img
-                :src="`/src/data/${route.params.id}/${block.content}`"
+                :src="`/data/${route.params.id}/${block.content}`"
                 @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
             />
           </figure>
@@ -100,7 +100,7 @@ const initArticle = async () => {
 
     // URL 파라미터 id를 사용하여 해당 경로의 마크다운 파일을 가져옵니다.
     // fetch는 보통 public 폴더를 기준으로 작동하므로 경로 설정에 유의하세요.
-    const targetPath = `/src/data/${id}/comment.md`;
+    const targetPath = `/data/${id}/comment.md`;
 
     // 1. 유틸리티 함수 호출
     const { metadata: meta, blocks } = await parseMarkdownArticle(targetPath);

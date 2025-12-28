@@ -37,7 +37,7 @@
           <!-- [핵심] 이미지 섹션: id 폴더 내 파일과 자동 결합 -->
           <figure v-else-if="block.type === 'image'" class="full-width-image">
             <img
-                :src="`/src/data/${route.params.id}${block.url}`"
+                :src="`/data/${route.params.id}${block.url}`"
                 :alt="block.caption"
                 @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
             />
@@ -103,7 +103,7 @@ const fetchAndParse = async () => {
     if (!id) throw new Error("Missing ID");
 
     // 해당 ID 폴더의 article.md 로드 시도
-    const response = await fetch(`/src/data/${id}/article.md`);
+    const response = await fetch(`/data/${id}/article.md`);
     if (!response.ok) throw new Error("Article file not found");
 
     const text = await response.text();

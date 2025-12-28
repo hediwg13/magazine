@@ -19,7 +19,7 @@
           @mouseleave="hoveredIssue = null"
       >
         <div class="cover-wrapper">
-          <img :src="`/src/data/${issue.id}/cover.webp`" :alt="issue.title" class="cover-img" />
+          <img :src="`/data/${issue.id}/cover.webp`" :alt="issue.title" class="cover-img" />
           <div class="issue-badge">Issue #{{ issue.id }}</div>
 
           <!-- Hover Overlay for Desktop -->
@@ -79,7 +79,7 @@ const loading = ref(true);
  */
 const fetchIssueList = async () => {
   try {
-    const response = await fetch('/src/data/list.md');
+    const response = await fetch('/data/list.md');
     const text = await response.text();
 
 // ★ 수정된 부분: 개행이 2개 이상 연속된 구간을 기준으로 분리

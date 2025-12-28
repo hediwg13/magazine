@@ -3,7 +3,7 @@
 
     <!-- 아이템 1 -->
     <RouterLink to="/article/2" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
-      <img src="/src/data/2//cover.webp" alt="Cover"/>
+      <img src="/data/2//cover.webp" alt="Cover"/>
       <div class="caption">
         <span>01 / Article</span>
         <h3>생각하는 기계와 질문하는 인간</h3>
@@ -12,7 +12,7 @@
 
     <!-- 아이템 2 -->
     <RouterLink to="/comment/2" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
-      <img src="/src/data/2/image2.webp" alt="Image 1" loading="lazy"/>
+      <img src="/data/2/image2.webp" alt="Image 1" loading="lazy"/>
       <div class="caption">
         <span>02 / Comment</span>
         <h3>Friend or Enemy?</h3>
