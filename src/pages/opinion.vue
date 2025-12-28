@@ -17,7 +17,7 @@
       <section class="author-bio">
         <div class="author-image-frame">
           <img
-              :src="`/src/data/${route.params.id}${metadata.authorimage}`"
+              :src="`/data/${route.params.id}${metadata.authorimage}`"
               class="author-image"
               @error="(e) => e.target.src = 'https://placehold.co/200x200?text=Author'"
           />
@@ -53,7 +53,7 @@
           <figure v-else-if="block.type === 'image'" class="full-width-image">
             <!-- 요청하신 대로 id 폴더 내의 이미지 파일과 결합 -->
             <img
-                :src="`/src/data/${route.params.id}${block.url}`"
+                :src="`/data/${route.params.id}${block.url}`"
                 :alt="block.caption"
                 @error="(e) => e.target.src = 'https://placehold.co/1200x800?text=Image+Not+Found'"
             />
@@ -120,7 +120,7 @@ const initArticle = async () => {
     if (!id) throw new Error("Article ID is missing.");
 
     // 주소창의 id에 따라 해당 폴더의 opinion.md 파일을 읽어옵니다.
-    const targetPath = `/src/data/${id}/opinion.md`;
+    const targetPath = `/data/${id}/opinion.md`;
 
     const { metadata: meta, blocks } = await parseMarkdownArticle(targetPath);
 
