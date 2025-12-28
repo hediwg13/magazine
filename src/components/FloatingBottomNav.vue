@@ -11,6 +11,7 @@
       <div class="related-content-wrapper">
         <h3 class="related-title">Articles</h3>
 
+        <RouterLink to="../list" class="read-all">Read Other Issue</RouterLink>
         <div class="related-articles-grid">
           <!-- Item 1 -->
           <RouterLink :to="`/article/${route.params.id}`" class="related-article-item">
@@ -61,7 +62,6 @@
           </RouterLink>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -238,6 +238,30 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.read-all {
+  margin-left: auto;
+
+  display: block; /* 블록 요소로 취급하여 마진이 작동하게 함 */
+  background: none;
+  border: none;
+  color: #888;
+  padding-bottom: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-decoration: none; /* 링크의 기본 밑줄을 제거합니다. */
+
+  &:hover {
+    /* 기존보다 더 진하고 뚜렷한 그림자 설정 */
+    color: #000;
+    text-shadow:
+        1px 1px 2px rgba(0, 0, 0, 0.4),
+        0 0 5px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .related-title {

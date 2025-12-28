@@ -46,7 +46,7 @@
         <!-- 메뉴 링크들 -->
         <div class="nav-links">
           <RouterLink to="/" class="nav-item">Home</RouterLink>
-          <a href="#" class="nav-item">Latest</a>
+          <RouterLink to="/list" class="nav-item">List</RouterLink>
           <a href="#" class="nav-item">Subscribe</a>
           <a href="#" class="nav-item">Search</a>
         </div>

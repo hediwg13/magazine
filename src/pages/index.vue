@@ -2,20 +2,20 @@
   <div class="content-list">
 
     <!-- 아이템 1 -->
-    <RouterLink to="/article/1" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
-      <img src="/cover.webp" alt="Cover"/>
+    <RouterLink to="/article/2" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
+      <img src="/src/data/2//cover.webp" alt="Cover"/>
       <div class="caption">
         <span>01 / Article</span>
-        <h3>카지노 이코노미와 질서의 붕괴</h3>
+        <h3>생각하는 기계와 질문하는 인간</h3>
       </div>
     </RouterLink>
 
     <!-- 아이템 2 -->
-    <RouterLink to="/comment/1" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
-      <img src="/image1.webp" alt="Image 1" loading="lazy"/>
+    <RouterLink to="/comment/2" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
+      <img src="/src/data/2/image2.webp" alt="Image 1" loading="lazy"/>
       <div class="caption">
         <span>02 / Comment</span>
-        <h3>Let's Go Gambling!</h3>
+        <h3>Friend or Enemy?</h3>
       </div>
     </RouterLink>
 
@@ -23,7 +23,7 @@
     <div class="grid-section">
 
       <!-- 3번 아이템 (작게) -->
-      <RouterLink to="/opinion/1" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
+      <RouterLink to="/opinion/2" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
         <img src="/image3.webp" alt="Art 3" />
         <div class="caption">
           <span>03 / Opinion</span>
@@ -32,7 +32,7 @@
       </RouterLink>
 
       <!-- 4번 아이템 (작게) -->
-      <RouterLink to="/dialogue/1" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
+      <RouterLink to="/dialogue/2" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
         <img src="/image4.webp" alt="Art 4" />
         <div class="caption">
           <span>04 / Dialogue</span>

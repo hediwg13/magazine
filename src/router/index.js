@@ -16,7 +16,12 @@ const routes = [
         name: 'Article',
         component: () => import('../pages/article.vue')
     },
+    {
 
+        path: '/list',
+        name: 'list',
+        component: () => import('../pages/list.vue')
+    },
     {
         path: '/opinion/:id',
         name: 'Opinion',
