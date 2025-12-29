@@ -24,10 +24,10 @@
 
       <!-- 3번 아이템 (작게) -->
       <RouterLink to="/opinion/2" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
-        <img src="/image3.webp" alt="Art 3" />
+        <img src="/data/2/image3.webp" alt="Art 3" />
         <div class="caption">
           <span>03 / Opinion</span>
-          <h3>게임을 종료하고 싶습니다</h3>
+          <h3>지능의 평준화가 만들어내는 새로운 권력</h3>
         </div>
       </RouterLink>
 

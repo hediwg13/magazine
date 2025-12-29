@@ -1,6 +1,6 @@
 id: 2
 title: AI and Human
-articles: 생각하는 기계와 질문하는 사람 | Friend or Enemy | 안수빈의 글 | 질문들
+articles: 생각하는 기계와 질문하는 사람 | Friend or Enemy | 지능의 평준화가 만들어내는 새로운 권력 | 질문들
 
 id: 1
 title : Casino Economy
