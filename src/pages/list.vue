@@ -15,18 +15,17 @@
           v-for="issue in issues"
           :key="issue.id"
           class="issue-card"
-          @mouseenter="hoveredIssue = issue"
-          @mouseleave="hoveredIssue = null"
+          @click="toggleIssue(issue)"
       >
         <div class="cover-wrapper">
           <img :src="`/data/${issue.id}/cover.webp`" :alt="issue.title" class="cover-img" />
           <div class="issue-badge">Issue #{{ issue.id }}</div>
 
-          <!-- Hover Overlay for Desktop -->
-          <div class="cover-overlay" :class="{ active: hoveredIssue?.id === issue.id }">
-            <div class="overlay-content">
-              <p class="view-text">VIEW CONTENTS</p>
-            </div>
+          <!--
+            데스크탑 호버 효과:
+            패널이 열려있지 않을 때만 "VIEW CONTENTS" 안내가 나오도록 처리
+          -->
+          <div class="cover-overlay" :class="{ active: activeIssue?.id !== issue.id }">
           </div>
         </div>
 
@@ -35,9 +34,9 @@
           <p class="subtitle">{{ issue.subtitle }}</p>
         </div>
 
-        <!-- 슬라이드 업 패널: 호버 시 나타나는 아티클 목록 -->
+        <!-- 슬라이드 업 패널: 클릭 시 나타나는 아티클 목록 -->
         <transition name="slide-up">
-          <div v-if="hoveredIssue?.id === issue.id" class="content-panel">
+          <div v-if="activeIssue?.id === issue.id" class="content-panel" @click.stop>
             <div class="panel-inner">
               <div class="panel-header">
                 <span class="panel-tag">Inside Issue #{{ issue.id }}</span>
@@ -60,8 +59,12 @@
       </div>
     </main>
 
-    <!-- 배경 블러 오버레이 -->
-    <div class="global-overlay" :class="{ visible: hoveredIssue }"></div>
+    <!-- 배경 블러 오버레이: 클릭 시 패널 닫기 -->
+    <div
+        class="global-overlay"
+        :class="{ visible: activeIssue }"
+        @click="activeIssue = null"
+    ></div>
   </div>
 </template>
 
@@ -71,8 +74,19 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const issues = ref([]);
-const hoveredIssue = ref(null);
+const activeIssue = ref(null); // 'hoveredIssue'에서 'activeIssue'로 명칭 변경
 const loading = ref(true);
+
+/**
+ * 매거진 클릭 시 패널 토글 로직
+ */
+const toggleIssue = (issue) => {
+  if (activeIssue.value?.id === issue.id) {
+    activeIssue.value = null; // 이미 열려있으면 닫기
+  } else {
+    activeIssue.value = issue; // 선택한 이슈 열기
+  }
+};
 
 /**
  * 매거진 인덱스 데이터 로드 및 파싱
@@ -80,10 +94,9 @@ const loading = ref(true);
 const fetchIssueList = async () => {
   try {
     const response = await fetch('/data/list.md');
+    if (!response.ok) throw new Error("List not found");
     const text = await response.text();
 
-// ★ 수정된 부분: 개행이 2개 이상 연속된 구간을 기준으로 분리
-// \n(개행) + \s*(공백들) + \n(개행) -> 즉, 빈 줄을 의미합니다.
     const blocks = text.split(/\n\s*\n/).filter(b => b.trim());
 
     issues.value = blocks.map(block => {
@@ -91,8 +104,7 @@ const fetchIssueList = async () => {
       const item = {};
 
       lines.forEach(line => {
-        const colonIndex = line.indexOf(':'); // split(':') 대신 첫 번째 콜론 위치를 찾는 게 더 안전합니다.
-
+        const colonIndex = line.indexOf(':');
         if (colonIndex !== -1) {
           const key = line.substring(0, colonIndex).trim().toLowerCase();
           const val = line.substring(colonIndex + 1).trim();
@@ -118,7 +130,6 @@ const goToIssue = (id) => {
 };
 
 const goToArticle = (id, idx) => {
-  // 인덱스에 따라 다른 성격의 페이지로 연결 (예시 로직)
   const types = ['article', 'comment', 'opinion', 'dialogue'];
   router.push(`/${types[idx] || 'article'}/${id}`);
 };
@@ -155,6 +166,7 @@ onMounted(fetchIssueList);
 
 .issue-card {
   position: relative;
+  cursor: pointer; /* 클릭 가능함을 표시 */
 
   .cover-wrapper {
     position: relative;
@@ -171,6 +183,34 @@ onMounted(fetchIssueList);
       position: absolute; top: 1.5rem; left: 1.5rem;
       background: #000; color: #fff; padding: 0.4rem 0.8rem;
       font-size: 0.7rem; font-weight: 900; text-transform: uppercase;
+      z-index: 5;
+    }
+
+    /* 카드 호버 시 나오는 안내 레이어 */
+    .cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 4;
+
+      .view-text {
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        font-size: 0.9rem;
+        color: #fff;
+        border: 2px solid #fff;
+        padding: 0.8rem 1.5rem;
+        letter-spacing: 0.1em;
+      }
+    }
+
+    &:hover .cover-overlay.active {
+      opacity: 1;
     }
   }
 
@@ -183,7 +223,7 @@ onMounted(fetchIssueList);
   &:hover .cover-img { transform: scale(1.05); }
 }
 
-/* 호버 시 나타나는 아티클 리스트 패널 */
+/* 콘텐츠 패널 */
 .content-panel {
   position: fixed;
   bottom: 0;
@@ -207,9 +247,11 @@ onMounted(fetchIssueList);
     .panel-tag { font-size: 0.7rem; color: #555; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
     h3 { font-size: 3rem; margin: 0; text-transform: uppercase; }
     .read-all {
+      margin-left: auto;
       background: none; border: none; color: #fff; border-bottom: 1px solid #333;
       padding-bottom: 5px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 0.8rem;
-      &:hover { border-color: #fff; }
+      text-decoration: none;
+      &:hover { border-color: #fff; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); }
     }
   }
 
@@ -231,9 +273,20 @@ onMounted(fetchIssueList);
 }
 
 .global-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(5px);
-  z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
-  &.visible { opacity: 1; }
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(5px);
+  z-index: 150;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  cursor: pointer;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 /* Transitions */
