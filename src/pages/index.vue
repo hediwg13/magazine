@@ -2,20 +2,20 @@
   <div class="content-list">
 
     <!-- 아이템 1 -->
-    <RouterLink to="/article/3" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
-      <img src="/data/3//cover.webp" alt="Cover"/>
+    <RouterLink to="/article/5" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
+      <img src="/data/5/cover.webp" alt="Cover"/>
       <div class="caption">
         <span>01 / Article</span>
-        <h3>시지프스의 저항은 실패일까</h3>
+        <h3>2026년, 어떻게 살아야 할까</h3>
       </div>
     </RouterLink>
 
     <!-- 아이템 2 -->
-    <RouterLink to="/comment/3" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
-      <img src="/data/3/image2.webp" alt="Image 1" loading="lazy"/>
+    <RouterLink to="/comment/5" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
+      <img src="/data/5/image2.webp" alt="Image 1" loading="lazy"/>
       <div class="caption">
         <span>02 / Comment</span>
-        <h3>Is it Worth it?</h3>
+        <h3>How to fix your entire life in 1 day</h3>
       </div>
     </RouterLink>
 
@@ -23,11 +23,11 @@
     <div class="grid-section">
 
       <!-- 3번 아이템 (작게) -->
-      <RouterLink to="/opinion/3" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
-        <img src="/data/3/image3.webp" alt="Art 3" />
+      <RouterLink to="/opinion/5" class="art-item grid-half trigger-item" style="text-decoration: none; color: inherit; display: block;">
+        <img src="/data/5/image3.webp" alt="Art 3" />
         <div class="caption">
           <span>03 / Opinion</span>
-          <h3>코인판에 정녕 오아시스란 없는 것일까</h3>
+          <h3>외주 맡긴 자아</h3>
         </div>
       </RouterLink>
 
