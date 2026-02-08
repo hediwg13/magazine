@@ -13,7 +13,6 @@
     <div class="split-layout">
 
       <!-- [왼쪽] 스크롤 영역 -->
-      <!-- className 오류 수정: class 사용 -->
       <section class="left-scroll-area">
         <div class="scroll-content">
 
@@ -21,7 +20,7 @@
           <RouterView />
 
           <footer class="footer-area">
-            <p>© blockchain Vally</p>
+            <p>© blockchain Valley</p>
           </footer>
         </div>
       </section>
@@ -29,21 +28,33 @@
       <!-- [오른쪽] 고정 사이드바 -->
       <aside class="right-sticky-area">
         <div class="sticky-content">
-          <RouterLink to="/" class="big-logo" style="text-decoration: none; color: #000000; display: block;">Delphi</RouterLink>
-          <div class="sticky-text">
-            <h2>
-              Veritas<br>
-              Vincit<br>
-              Omnia
-            </h2>
+          <!-- 상단 영역: 로고 + 선 + 모토 (Veritas Vincit Omnia) -->
+          <div class="sidebar-top">
+            <RouterLink to="/" class="big-logo">Delphi</RouterLink>
+            <div class="title-separator"></div>
+            <div class="sticky-text">
+              <h2 class="motto-text">Veritas Vincit Omnia</h2>
+            </div>
+          </div>
+
+          <!-- 중앙 여백 (flex-grow) -->
+          <div class="spacer"></div>
+
+          <!-- 하단 영역: Other Issue (선 2개로 강조) -->
+          <div class="sidebar-bottom">
+            <nav class="issue-nav-wrapper">
+              <div class="double-line"></div>
+              <RouterLink to="/list" class="menu-link">Other Issue</RouterLink>
+              <div class="double-line"></div>
+            </nav>
           </div>
         </div>
       </aside>
     </div>
-    <!-- ★★★ 3. 하단 플로팅 내비게이션 바 (추가됨) ★★★ -->
+
+    <!-- 3. 하단 플로팅 내비게이션 바 -->
     <nav class="floating-navbar">
       <div class="nav-content">
-        <!-- 메뉴 링크들 -->
         <div class="nav-links">
           <RouterLink to="/" class="nav-item">Home</RouterLink>
           <RouterLink to="/list" class="nav-item">List</RouterLink>
@@ -68,7 +79,6 @@ let lenis;
 const route = useRoute();
 const preloader = ref(null);
 
-// 페이지 변경 시 스크롤 맨 위로 초기화
 watch(
     () => route.path,
     () => {
@@ -78,14 +88,12 @@ watch(
       const scroller = document.querySelector('.left-scroll-area');
       if (scroller) scroller.scrollTop = 0;
 
-      // 모바일에서는 윈도우 스크롤도 초기화
       if (window.innerWidth <= 768) {
         window.scrollTo(0, 0);
       }
     }
 );
 
-// 이미지 로딩 감지
 const waitForImages = () => {
   const images = [...document.querySelectorAll('img')];
   const promises = images.map((img) => {
@@ -99,7 +107,6 @@ const waitForImages = () => {
 };
 
 onMounted(async () => {
-  // 모바일이 아닐 때만 Lenis 적용
   if (window.innerWidth > 768) {
     const wrapper = document.querySelector('.left-scroll-area');
     const content = document.querySelector('.scroll-content');
@@ -123,7 +130,6 @@ onMounted(async () => {
     }
   }
 
-  // 로딩 완료 후 애니메이션
   await waitForImages();
 
   if (preloader.value) {
@@ -146,26 +152,20 @@ onUnmounted(() => {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
 * { box-sizing: border-box; }
 
-/* 글로벌 리셋 */
-html, body, #__nuxt, #app {
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  max-width: 100% !important;
+html, body, #app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
 }
 
-:root {
-  --bg-color: #f4f4f4;
-  --text-color: #000;
-}
-
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background-color: #f4f4f4;
+  color: #000;
   font-family: 'Playfair Display', serif;
 }
 
@@ -177,244 +177,163 @@ body {
 
 /* 프리로더 */
 .preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;
   .loader-content {
     text-align: center;
-    h1 {
-      font-family: 'Playfair Display', sans-serif;
-      font-size: 4rem;
-      font-weight: 800;
-      margin: 0;
-      color : #7D0000;
-    }
-    p {
-      font-family: 'Inter', sans-serif;
-      margin-top: 10px;
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      animation: blink 1s infinite;
-    }
+    h1 { font-family: 'Playfair Display', sans-serif; font-size: 4rem; font-weight: 800; margin: 0; color: #7D0000; }
+    p { font-family: 'Inter', sans-serif; margin-top: 10px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1s infinite; }
   }
 }
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* 플로팅 내비바 */
 .floating-navbar {
-  position: fixed;
-  bottom: 30px; /* 화면 하단에서 30px 위로 */
-  left: 50%;
-  transform: translateX(-50%); /* 정확히 중앙 정렬 */
-  z-index: 1001; /* 콘텐츠 위에 떠 있어야 함 */
-
-  /* 반투명 배경 효과 (Glassmorphism) */
-  background: rgba(20, 20, 20, 0.75); /* 어두운 반투명 배경 */
-  backdrop-filter: blur(12px); /* 뒤 배경 흐리게 */
-  -webkit-backdrop-filter: blur(12px);
-
-  border-radius: 50px; /* 캡슐 모양 */
-  padding: 10px 16px; /* 박스 내부 여백 키움 */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* 그림자 */
-
-  .nav-content {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem; /* 로고와 메뉴 사이 간격 */
-  }
-
-  /* 흰색 로고 박스 */
-
-
-  /* 메뉴 링크들 */
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1001;
+  background: rgba(20, 20, 20, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-radius: 50px; padding: 10px 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   .nav-links {
-    display: flex;
-    gap: 1.5rem; /* 메뉴 사이 간격 */
-    padding-left:1.5rem;
-    padding-right: 1.5rem;
-
-    .nav-item {
-      text-decoration: none;
-      color: #fff; /* 흰색 글자 */
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: opacity 0.2s;
-
-      &:hover {
-        opacity: 0.7;
-      }
-    }
+    display: flex; gap: 1.5rem; padding: 0 1.5rem;
+    .nav-item { text-decoration: none; color: #fff; font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500; transition: opacity 0.2s; &:hover { opacity: 0.7; } }
   }
 }
-.split-layout {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
 
-/* 왼쪽 스크롤 영역 */
+.split-layout { display: flex; width: 100%; height: 100%; }
+
+/* 왼쪽 영역 */
 .left-scroll-area {
-  width: 75%;
-  height: 100%;
-  overflow-y: auto;
-  position: relative;
-  overscroll-behavior: none;
-  &::-webkit-scrollbar { display: none; }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  background-color: #fff;
+  width: 75%; height: 100%; overflow-y: auto; background-color: #fff;
+  &::-webkit-scrollbar { display: none; } scrollbar-width: none;
 }
+.scroll-content { padding: 4rem 2rem; min-height: 100%; }
+.footer-area { margin-top: 5rem; padding-top: 2rem; border-top: 1px solid #000; font-size: 0.9rem; color: #666; }
 
-.scroll-content {
-  padding: 4rem 2rem;
-  box-sizing: border-box;
-  min-height: 100%;
-}
-
-.nav-bar {
-  margin-bottom: 4rem;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.footer-area {
-  margin-top: 5rem;
-  padding-top: 2rem;
-  border-top: 1px solid #000;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-/* 오른쪽 사이드바 */
+/* 오른쪽 고정 사이드바 */
 .right-sticky-area {
-  width: 25%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem;
-  box-sizing: border-box;
-  background-color: #f4f4f4;
+  width: 25%; height: 100%; background-color: #f4f4f4; padding: 4rem 3rem; display: flex; align-items: center; justify-content: center;
 
   .sticky-content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 90%;
+    align-items: center;
+    height: 100%;
     width: 100%;
+    text-align: center;
 
-    .big-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 6vw;
-      font-weight: 900;
-      line-height: 1;
-      text-align: left;
+    .sidebar-top {
+      width: 100%;
+      margin-bottom: 2rem;
+
+      .big-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 6vw;
+        font-weight: 900;
+        line-height: 1;
+        text-decoration: none;
+        color: #000;
+        display: block;
+        /* [수정] 선과의 간격을 더 넓히기 위해 margin-bottom 증가 */
+        margin-bottom: 2.5rem;
+        transition: color 0.3s ease;
+        &:hover { color: #7D0000; }
+      }
+
+      .title-separator {
+        width: 100%;
+        height: 1.5px;
+        background-color: #000;
+        /* [수정] 선 아래 모토와의 간격을 설정 */
+        margin-bottom: 1.5rem;
+      }
+
+      /* [수정] 모토 텍스트 위치 이동 (로고 바로 밑) */
+      .sticky-text {
+        .motto-text {
+          font-family: 'Lora', sans-serif;
+          font-size: 1.2vw;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.3em;
+          color: #666;
+          margin: 0;
+          white-space: nowrap;
+        }
+      }
     }
 
-    .sticky-text {
-      text-align: left;
-      h2 {
-        font-family: 'Lora', sans-serif;
-        font-size: 3vw;
-        line-height: 1.1;
-        margin-bottom: 2rem;
-      }
-      .action-btn {
-        padding: 1rem 2rem;
-        background: #000;
-        color: #fff;
-        border: none;
-        font-weight: bold;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.3s;
-        text-decoration: none;
-        display: inline-block;
-        &:hover { background: #333; }
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .sidebar-bottom {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 2rem;
+
+      .issue-nav-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        .double-line {
+          width: 100%;
+          height: 1px;
+          background-color: #000;
+        }
+
+        .menu-link {
+          font-family: 'Lora', serif;
+          font-size: 2.2vw;
+          font-weight: 700;
+          color: #000;
+          text-decoration: none;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+          padding: 0.5rem 0;
+          white-space: nowrap;
+
+          &:hover {
+            color: #7D0000;
+            letter-spacing: 0.15em;
+          }
+        }
       }
     }
   }
 }
 
-/* --- 모바일 대응 (핵심 수정) --- */
 @media (max-width: 768px) {
-  /* 1. 모바일 스크롤 잠금 해제 */
-  html, body, #__nuxt, #app {
-    overflow: auto !important; /* hidden -> auto */
-    height: auto !important;
-    min-height: 100% !important;
-  }
-
-  .main-container {
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  /* 2. 레이아웃 방향 전환 */
+  html, body, #app { overflow: auto !important; height: auto !important; }
   .split-layout { flex-direction: column-reverse; }
-
-  /* 영역 높이 제한 해제 */
-  .left-scroll-area {
-    width: 100%;
-    height: auto !important;
-    position: relative;
-    overflow: visible !important;
-    overscroll-behavior: auto !important;
-  }
-  .scroll-content { padding: 2rem 1.5rem; }
-
-  /* 3. 오른쪽(상단) 헤더 박스 */
+  .left-scroll-area { width: 100%; height: auto !important; overflow: visible !important; }
   .right-sticky-area {
-    width: 100%;
-    height: auto !important; /* 높이 자동 */
-    min-height: 80px;
-    position: relative;
-    padding: 1rem 1.5rem;
-    background-color: #f4f4f4;
-    box-shadow: 0 4px 18px rgba(40, 40, 40, 0.1);
-  }
-
-  .right-sticky-area .sticky-content {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
-  .big-logo { font-size: 2rem; margin: 0;
-    color : #AE0000;}
-
-  /* 4. 텍스트 그룹 우측 정렬 */
-  .sticky-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-  }
-
-  .sticky-text h2 {
-    display: block;
-    font-size: 0.9rem;
-    margin-bottom: 0;
-    line-height: 1.2;
-    color: #555;
-  }
-
-  .sticky-text .action-btn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.75rem;
+    width: 100%; min-height: 120px; padding: 1.5rem;
+    .sticky-content {
+      flex-direction: row; height: auto; align-items: center; justify-content: space-between;
+      .sidebar-top {
+        width: auto; margin: 0; display: flex; flex-direction: column; align-items: flex-start;
+        .big-logo { font-size: 2rem; margin: 0; }
+        .title-separator { display: none; }
+        .sticky-text {
+          .motto-text { font-size: 0.6rem; letter-spacing: 0.1em; }
+        }
+      }
+      .spacer { display: none; }
+      .sidebar-bottom {
+        width: auto; padding: 0;
+        .issue-nav-wrapper {
+          gap: 0;
+          .double-line { display: none; }
+          .menu-link { font-size: 0.9rem; padding: 0; }
+        }
+      }
+    }
   }
 }
 </style>
