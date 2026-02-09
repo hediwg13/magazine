@@ -3,7 +3,7 @@
 
     <!-- 아이템 1 -->
     <RouterLink to="/article/5" class="art-item trigger-item" style="text-decoration: none; color: inherit; display: block;">
-      <img src="/data/5/cover.webp" alt="Cover"/>
+      <img src="/data/5/cover1.webp" alt="Cover"/>
       <div class="caption">
         <span>01 / Article</span>
         <h3>2026년, 어떻게 살아야 할까</h3>
