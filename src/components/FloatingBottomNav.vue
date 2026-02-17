@@ -110,6 +110,13 @@ const updatePosition = () => {
   }
 
   const scrollableHeight = scrollHeight - clientHeight;
+
+  // 페이지가 너무 짧으면 항상 숨김
+  if (scrollableHeight <= 100) {
+    translateYValue.value = 100;
+    return;
+  }
+
   const startThreshold = scrollableHeight * 0.65; // 하단 35% 지점 도달 시
 
   if (scrollTop < startThreshold) {
@@ -163,10 +170,15 @@ const detachScrollListeners = () => {
 };
 
 watch(() => route.path, async () => {
-  await nextTick();
+  // 페이지 이동 시 항상 숨김 상태로 초기화
   translateYValue.value = 100;
+  await nextTick();
   // 페이지 이동 후 컨테이너가 다시 그려질 수 있으므로 리스너 재설정
   attachScrollListeners();
+  // 스크롤 위치 계산 (약간의 지연 후 실행)
+  setTimeout(() => {
+    updatePosition();
+  }, 50);
 });
 
 watch(() => route.params.id, (newId) => {
@@ -174,10 +186,19 @@ watch(() => route.params.id, (newId) => {
 });
 
 onMounted(async () => {
+  // 초기에 항상 숨김 상태로 시작
+  translateYValue.value = 100;
+
   await initArticle();
-  await nextTick(); // DOM이 완전히 렌더링된 후 실행
+
+  // DOM 렌더링 후 초기화
+  await nextTick();
   attachScrollListeners();
-  updatePosition(); // 초기 스크롤 위치 계산
+
+  // 스크롤 위치 계산
+  setTimeout(() => {
+    updatePosition();
+  }, 50);
 
   // 이미지 로딩 후 높이가 변할 수 있으므로 다시 계산
   const images = document.querySelectorAll('img');
@@ -206,6 +227,7 @@ onUnmounted(() => {
   border-top: 1px solid rgba(0,0,0,0.1);
   will-change: transform;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  transform: translateY(100%);
 }
 
 .nav-content {
