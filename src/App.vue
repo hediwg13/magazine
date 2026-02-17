@@ -28,24 +28,51 @@
       <!-- [오른쪽] 고정 사이드바 -->
       <aside class="right-sticky-area">
         <div class="sticky-content">
-          <!-- 상단 영역: 로고 + 선 + 모토 (Veritas Vincit Omnia) -->
+          <!-- 상단 영역: 매거진 정보 -->
           <div class="sidebar-top">
+            <!-- 이슈 번호 뱃지 -->
+            <div class="issue-badge">
+              <span class="issue-label">CURRENT ISSUE</span>
+              <span class="issue-number">#05</span>
+            </div>
+
+            <!-- 로고 -->
             <RouterLink to="/" class="big-logo">Delphi</RouterLink>
-            <div class="title-separator"></div>
-            <div class="sticky-text">
-              <h2 class="motto-text">Veritas Vincit Omnia</h2>
+
+            <!-- 이슈 테마/제목 -->
+            <div class="issue-theme">
+              <p class="theme-title">How to Live?</p>
+              <p class="theme-subtitle">January 2026</p>
+            </div>
+
+            <!-- 모토 -->
+            <div class="motto-wrapper">
+              <div class="motto-line"></div>
+              <p class="motto-text">Veritas Vincit Omnia</p>
+              <div class="motto-line"></div>
             </div>
           </div>
 
-          <!-- 중앙 여백 (flex-grow) -->
+          <!-- 중앙 여백 -->
           <div class="spacer"></div>
 
-          <!-- 하단 영역: Other Issue (선 2개로 강조) -->
+          <!-- 하단 네비게이션 -->
           <div class="sidebar-bottom">
-            <nav class="issue-nav-wrapper">
-              <div class="double-line"></div>
-              <RouterLink to="/list" class="menu-link">Other Issue</RouterLink>
-              <div class="double-line"></div>
+            <nav class="main-nav">
+              <RouterLink to="/" class="nav-item">
+                <span class="nav-num">01</span>
+                <span class="nav-label">Home</span>
+              </RouterLink>
+              <div class="nav-divider"></div>
+              <RouterLink to="/list" class="nav-item">
+                <span class="nav-num">02</span>
+                <span class="nav-label">Archive</span>
+              </RouterLink>
+              <div class="nav-divider"></div>
+              <RouterLink to="/about" class="nav-item">
+                <span class="nav-num">03</span>
+                <span class="nav-label">About</span>
+              </RouterLink>
             </nav>
           </div>
         </div>
@@ -58,7 +85,7 @@
         <div class="nav-links">
           <RouterLink to="/" class="nav-item">Home</RouterLink>
           <RouterLink to="/list" class="nav-item">List</RouterLink>
-          <a href="#" class="nav-item">Subscribe</a>
+          <RouterLink to="/about" class="nav-item">about</RouterLink>
           <a href="#" class="nav-item">Search</a>
         </div>
       </div>
@@ -151,8 +178,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
-
 * { box-sizing: border-box; }
 
 html, body, #app {
@@ -166,7 +191,7 @@ html, body, #app {
 body {
   background-color: #f4f4f4;
   color: #000;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Source Serif 4', 'EB Garamond', serif;
 }
 
 .main-container {
@@ -181,12 +206,28 @@ body {
   background-color: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;
   .loader-content {
     text-align: center;
-    h1 { font-family: 'Playfair Display', sans-serif; font-size: 4rem; font-weight: 800; margin: 0; color: #7D0000; }
-    p { font-family: 'Inter', sans-serif; margin-top: 10px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1s infinite; }
+    h1 {
+      font-family: 'Abril Fatface', 'Cinzel', serif;
+      font-size: 4rem;
+      font-weight: 400;
+      margin: 0;
+      color: #7D0000;
+      letter-spacing: 0.02em;
+    }
+    p {
+      font-family: 'Space Grotesk', sans-serif;
+      margin-top: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #999;
+      animation: blink 1.5s infinite;
+    }
   }
 }
 
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
 /* 플로팅 내비바 */
 .floating-navbar {
@@ -195,7 +236,16 @@ body {
   border-radius: 50px; padding: 10px 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   .nav-links {
     display: flex; gap: 1.5rem; padding: 0 1.5rem;
-    .nav-item { text-decoration: none; color: #fff; font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500; transition: opacity 0.2s; &:hover { opacity: 0.7; } }
+    .nav-item {
+      text-decoration: none;
+      color: #fff;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      transition: opacity 0.2s;
+      &:hover { opacity: 0.7; }
+    }
   }
 }
 
@@ -211,7 +261,8 @@ body {
 
 /* 오른쪽 고정 사이드바 */
 .right-sticky-area {
-  width: 25%; height: 100%; background-color: #f4f4f4; padding: 4rem 3rem; display: flex; align-items: center; justify-content: center;
+  width: 25%; height: 100%; background-color: #fafafa; padding: 4rem 3rem; display: flex; align-items: center; justify-content: center;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
 
   .sticky-content {
     display: flex;
@@ -223,40 +274,99 @@ body {
 
     .sidebar-top {
       width: 100%;
-      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
 
+      /* 이슈 뱃지 */
+      .issue-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+
+        .issue-label {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 0.5rem;
+          font-weight: 700;
+          letter-spacing: 0.3em;
+          color: #7D0000;
+          text-transform: uppercase;
+        }
+
+        .issue-number {
+          font-family: 'Cinzel', serif;
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #000;
+          letter-spacing: 0.05em;
+        }
+      }
+
+      /* 로고 */
       .big-logo {
-        font-family: 'Playfair Display', serif;
-        font-size: 6vw;
-        font-weight: 900;
-        line-height: 1;
+        font-family: 'Abril Fatface', serif;
+        font-size: 5.5vw;
+        font-weight: 400;
+        line-height: 0.95;
         text-decoration: none;
         color: #000;
         display: block;
-        /* [수정] 선과의 간격을 더 넓히기 위해 margin-bottom 증가 */
-        margin-bottom: 2.5rem;
-        transition: color 0.3s ease;
-        &:hover { color: #7D0000; }
+        transition: all 0.3s ease;
+        letter-spacing: 0.01em;
+        &:hover {
+          color: #7D0000;
+          transform: scale(1.02);
+        }
       }
 
-      .title-separator {
-        width: 100%;
-        height: 1.5px;
-        background-color: #000;
-        /* [수정] 선 아래 모토와의 간격을 설정 */
-        margin-bottom: 1.5rem;
-      }
+      /* 이슈 테마 */
+      .issue-theme {
+        text-align: center;
 
-      /* [수정] 모토 텍스트 위치 이동 (로고 바로 밑) */
-      .sticky-text {
-        .motto-text {
-          font-family: 'Lora', sans-serif;
-          font-size: 1.2vw;
+        .theme-title {
+          font-family: 'EB Garamond', serif;
+          font-size: 1.8rem;
           font-weight: 500;
+          font-style: italic;
+          color: #000;
+          margin: 0;
+          letter-spacing: 0.02em;
+        }
+
+        .theme-subtitle {
+          font-family: 'Source Serif 4', serif;
+          font-size: 0.7rem;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          color: #888;
           text-transform: uppercase;
-          letter-spacing: 0.3em;
+          margin: 0.5rem 0 0 0;
+        }
+      }
+
+      /* 모토 */
+      .motto-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100%;
+
+        .motto-line {
+          flex: 1;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(0,0,0,0.2), transparent);
+        }
+
+        .motto-text {
+          font-family: 'Cinzel', serif;
+          font-size: 0.65rem;
+          font-weight: 600;
+          letter-spacing: 0.25em;
           color: #666;
           margin: 0;
+          text-transform: uppercase;
           white-space: nowrap;
         }
       }
@@ -266,42 +376,60 @@ body {
       flex-grow: 1;
     }
 
+    /* 하단 네비게이션 */
     .sidebar-bottom {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-bottom: 2rem;
 
-      .issue-nav-wrapper {
-        width: 100%;
+      .main-nav {
         display: flex;
         flex-direction: column;
-        align-items: center;
         gap: 1rem;
 
-        .double-line {
-          width: 100%;
-          height: 1px;
-          background-color: #000;
-        }
-
-        .menu-link {
-          font-family: 'Lora', serif;
-          font-size: 2.2vw;
-          font-weight: 700;
-          color: #000;
+        .nav-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1rem 0;
           text-decoration: none;
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-          transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-          padding: 0.5rem 0;
-          white-space: nowrap;
+          color: #000;
+          border-bottom: 1px solid rgba(0,0,0,0.05);
+          transition: all 0.3s ease;
+
+          .nav-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #999;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+          }
+
+          .nav-label {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+          }
 
           &:hover {
-            color: #7D0000;
-            letter-spacing: 0.15em;
+            border-bottom-color: #7D0000;
+
+            .nav-num {
+              color: #7D0000;
+            }
+
+            .nav-label {
+              color: #7D0000;
+              padding-left: 0.5rem;
+            }
           }
+        }
+
+        .nav-divider {
+          height: 1px;
+          background: rgba(0,0,0,0.05);
+          margin: 0.5rem 0;
         }
       }
     }
@@ -309,31 +437,111 @@ body {
 }
 
 @media (max-width: 768px) {
-  html, body, #app { overflow: auto !important; height: auto !important; }
+  html, body, #app {
+    overflow: auto !important;
+    height: auto !important;
+    /* 모바일에서 한글 고딕 폰트 사용 */
+    font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
   .split-layout { flex-direction: column-reverse; }
   .left-scroll-area { width: 100%; height: auto !important; overflow: visible !important; }
+
   .right-sticky-area {
-    width: 100%; min-height: 120px; padding: 1.5rem;
+    width: 100%;
+    min-height: 100px;
+    padding: 1.2rem 1.5rem;
+    background: #fff;
+    border-left: none;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
     .sticky-content {
-      flex-direction: row; height: auto; align-items: center; justify-content: space-between;
+      flex-direction: row;
+      height: auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+
       .sidebar-top {
-        width: auto; margin: 0; display: flex; flex-direction: column; align-items: flex-start;
-        .big-logo { font-size: 2rem; margin: 0; }
-        .title-separator { display: none; }
-        .sticky-text {
-          .motto-text { font-size: 0.6rem; letter-spacing: 0.1em; }
+        width: auto;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+
+        .issue-badge {
+          display: none;
+        }
+
+        .big-logo {
+          font-size: 1.8rem;
+          margin: 0;
+          line-height: 1;
+        }
+
+        .issue-theme {
+          display: none;
+        }
+
+        .motto-wrapper {
+          display: none;
         }
       }
+
       .spacer { display: none; }
+
       .sidebar-bottom {
-        width: auto; padding: 0;
-        .issue-nav-wrapper {
-          gap: 0;
-          .double-line { display: none; }
-          .menu-link { font-size: 0.9rem; padding: 0; }
+        width: auto;
+        padding: 0;
+
+        .main-nav {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 0.5rem;
+
+          .nav-item {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            border-bottom: none;
+            border-radius: 4px;
+            background: rgba(0,0,0,0.05);
+
+            .nav-num { display: none; }
+            .nav-label { font-size: 0.75rem; }
+
+            &:hover {
+              background: #7D0000;
+              color: #fff;
+              border-bottom-color: transparent;
+              padding-left: 0.8rem;
+
+              .nav-num { color: #fff; }
+              .nav-label { color: #fff; padding-left: 0; }
+            }
+          }
+
+          .nav-divider { display: none; }
         }
       }
     }
   }
+
+  /* 모바일에서 모든 텍스트에 한글 폰트 적용 */
+  * {
+    font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  }
+
+  /* 타이틀/헤딩은 여전히 세리프 폰트 사용 */
+  h1, h2, h3, .big-logo, .syne-font, .hero-title, .card-title {
+    font-family: 'Playfair Display', 'Noto Serif KR', serif !important;
+  }
+
+  /* 모바일 플로팅 네비바 숨김 (사이드바에 있으므로) */
+  .floating-navbar { display: none; }
 }
 </style>

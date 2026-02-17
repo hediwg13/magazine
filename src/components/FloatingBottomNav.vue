@@ -177,6 +177,15 @@ onMounted(async () => {
   await initArticle();
   await nextTick(); // DOM이 완전히 렌더링된 후 실행
   attachScrollListeners();
+  updatePosition(); // 초기 스크롤 위치 계산
+
+  // 이미지 로딩 후 높이가 변할 수 있으므로 다시 계산
+  const images = document.querySelectorAll('img');
+  images.forEach(img => {
+    if (!img.complete) {
+      img.addEventListener('load', updatePosition);
+    }
+  });
 });
 
 onUnmounted(() => {

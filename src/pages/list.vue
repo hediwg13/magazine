@@ -40,7 +40,17 @@
             <div class="panel-inner">
               <div class="panel-header">
                 <span class="panel-tag">Inside Issue #{{ issue.id }}</span>
-                <button class="read-all" @click="goToIssue(issue.id)">Read Full Issue</button>
+                <div class="panel-actions">
+                  <button class="print-btn" @click="downloadPDF(issue.id)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9V2h12v7"></path>
+                      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                      <path d="M6 14h12v8H6z"></path>
+                    </svg>
+                    <span>Download PDF</span>
+                  </button>
+                  <button class="read-all" @click="goToIssue(issue.id)">Read Full Issue</button>
+                </div>
               </div>
               <div class="article-links">
                 <div
@@ -132,6 +142,18 @@ const goToIssue = (id) => {
 const goToArticle = (id, idx) => {
   const types = ['article', 'comment', 'opinion', 'dialogue'];
   router.push(`/${types[idx] || 'article'}/${id}`);
+};
+
+/**
+ * PDF 다운로드 함수
+ */
+const downloadPDF = (id) => {
+  const link = document.createElement('a');
+  link.href = `/data/${id}/${id}.pdf`;
+  link.download = `delphi-issue-${id}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 onMounted(fetchIssueList);
@@ -246,8 +268,35 @@ onMounted(fetchIssueList);
     margin-bottom: 3rem;
     .panel-tag { font-size: 0.7rem; color: #555; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
     h3 { font-size: 3rem; margin: 0; text-transform: uppercase; }
+    .panel-actions {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-end;
+    }
+    .print-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #333;
+      transition: all 0.3s ease;
+      &:hover {
+        border-color: #fff;
+        color: #ccc;
+      }
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
     .read-all {
-      margin-left: auto;
       background: none; border: none; color: #fff; border-bottom: 1px solid #333;
       padding-bottom: 5px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 0.8rem;
       text-decoration: none;
